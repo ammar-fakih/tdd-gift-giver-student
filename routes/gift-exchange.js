@@ -1,42 +1,38 @@
 const express = require('express');
 const router = express.Router();
+const GiftExchange = require('../models/gift-exchange');
+const { BadRequestError } = require('../utils/errors');
 
-let giftExchange = class {
-  pairs(names) {
-    if (names.length % 2 === 1) {
-      throw 'Names must be even length';
+router.post('/pairs', (req, res, next) => {
+  try {
+    if (!req.body) {
+      return next(new BadRequestError('No body'));
     }
-    let newArray = [];
-    while (names.length > 0) {
-      let ind1 = Math.floor(random() * names.length);
-      let num1 = newArray[ind1];
-      names.splice(ind1, 1);
-      let ind2 = Math.floor(random() * names.length);
-      let num2 = newArray[ind2];
-      names.splice(ind2, 1);
-      newArray.push([num1, num2]);
+    if (!req.body.names || !Array.isArray(req.body.names)) {
+      return next(new BadRequestError('Names array is required in body'));
     }
-    return newArray;
+    const response = GiftExchange.pairs(req.body.names);
+
+    res.status(200).send(response);
+  } catch (e) {
+    return next(new BadRequestError(e));
   }
-
-  traditional(names) {
-    let newArray = [];
-    let firstName = names[Math.floor(randome() * names.length)];
-
-    while (names.length > 0) {
-      
-    }
-  }
-};
-
-router.post('/pairs', (req, res) => {
-  console.log(req.body.names);
-  res.status(200).send({ message: 'received pairs' });
 });
 
-router.post('/traditional', (req, res) => {
-  // console.log(req.body.names);
-  res.status(200).send({ message: 'received traditional' });
+router.post('/traditional', (req, res, next) => {
+  try {
+    if (!req.body) {
+      return next(new BadRequestError('No body'));
+    }
+    if (!req.body.names || req.body.names.length < 2) {
+      return next(new BadRequestError('Names array is required in body'));
+    }
+    const response = GiftExchange.traditional(req.body.names);
+
+    res.status(200).send(response);
+  } catch (e) {
+    return next(new BadRequestError(e));
+  }
 });
 
 module.exports = router;
