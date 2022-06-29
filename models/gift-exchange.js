@@ -37,6 +37,22 @@ let GiftExchange = class {
     newArray.push(`${lastChosen} is giving a gift to ${firstName}`);
     return newArray;
   }
+
+  static quiz() {
+    return [0, 0, 0, 0, 0].map((item, i) => {
+      return {
+        question: 'question #' + i,
+        answerChoices: [
+          'a. first answer choice',
+          'b. second answer choice',
+          'c. third answer choice',
+          'd. fourth answer choice',
+        ],
+      };
+    });
+  }
+
+  static quizResults() {}
 };
 
 module.exports = GiftExchange;

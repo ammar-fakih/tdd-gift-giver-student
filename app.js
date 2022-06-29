@@ -16,14 +16,16 @@ app.get('/', (req, res) => {
 app.use('/gift-exchange', giftExchange);
 
 app.use((req, res, next) => {
-  return next(new NotFoundError);
+  return next(new NotFoundError());
 });
 
 app.use((error, req, res, next) => {
   let status = error.status || 500;
   let message = error.message || 'Something went wrong in the application';
 
-  return res.status(status).json({ error: { status: status, message: message } });
+  return res
+    .status(status)
+    .json({ error: { status: status, message: message } });
 });
 
 module.exports = app;

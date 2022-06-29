@@ -25,8 +25,7 @@ class NotFoundError extends ExpressError {
   }
 }
 
-exports.ExpressError = ExpressError;
-
-exports.BadRequestError = BadRequestError;
-
-exports.NotFoundError = NotFoundError;
+module.exports = {
+  BadRequestError,
+  NotFoundError,
+};
